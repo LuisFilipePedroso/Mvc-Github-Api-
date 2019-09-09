@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="../global.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <title>Fucking MVC Project</title>
+</head>
+
+<body>
+    <div class="container w-100 h-100">
+        <div class="w-100 h-100">
+            <div class="w-100 h-100 d-flex flex-column justify-content-center">
+                <div class="row">
+                    <a href="http://localhost:8080/MvcProject/src/view/pages/AddUser" class="btn btn-success col-3">Adicionar</a>
+                </div>
+                <div class="row">
+                    <table class="table table-hover mt-4" style="border-radius: 5px">
+                        <thead>
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">Nome</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Idade</th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="person-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    function handleDelete(id) {
+        swal({
+            title: "Tem Certeza?",
+            text: "Deseja mesmo deletar este usuário?",
+            icon: "warning",
+            buttons: ["Não", "Sim, deletar"],
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    jQuery.ajax({
+                        url: 'http://localhost:8080/MvcProject/src/services/User.php',
+                        dataType: 'json',
+                        type: 'POST',
+                        data: {
+                            option: 'DELETE',
+                            payload: {
+                                id
+                            }
+                        }
+                    }).done((data) => {
+                        if (data === 'SUCCESS') {
+                            swal('Deletado com sucesso', {
+                                icon: "success",
+                            })
+                            $(".person-table-body").empty()
+                            getData()
+                        }
+                    })
+                }
+            })
+    }
+
+    function getData() {
+        jQuery.ajax({
+            url: 'http://localhost:8080/MvcProject/src/services/User.php',
+            dataType: 'json',
+            type: 'POST',
+            data: {
+                option: 'GET',
+                payload: null
+            }
+        }).done(data => {
+            data.map(d => {
+                $(".person-table-body").append(`
+                        <tr>
+                            <td>${d.id}</td>
+                            <td>${d.name}</td>
+                            <td>${d.email}</td>
+                            <td>${d.age}</td>
+                            <td style="width: 50px">
+                                <div class="w-100 d-flex justify-content-center">
+                                    <a class="remove-decoration" style="color: #333;"
+                                    href="/MvcProject/src/view/pages/EditUser/?id=${d.id}"><i class="fa fa-pencil" style="font-size: 22px"></i></a>
+                                </div>
+                            </td>
+                            <td style="width: 50px">
+                                <div class="w-100 d-flex justify-content-center">
+                                    <a class="remove-decoration" style="color: #333;" onclick="handleDelete('${d.id}')">
+                                        <i class="fa fa-trash" style="font-size: 22px"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    `)
+            })
+        })
+    }
+    $(document).ready(function () {
+        getData()
+    })
+</script>
+
+</html>

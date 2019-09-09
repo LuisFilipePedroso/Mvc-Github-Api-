@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../global.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <title>Fucking MVC Project</title>
+</head>
+
+<body>
+    <div class="container w-100 h-100">
+        <div class="w-100 h-100">
+            <div class="w-100 h-100">
+                <form id="formAddUser" class="d-flex flex-column justify-content-center h-100">
+                    <div class="row">
+                        <div class="col-4">
+                            <label for="name">Name</label>
+                            <input class="form-control" type="text" name="name" id="name">
+                        </div>
+                        <div class="col-4">
+                            <label for="">Email</label>
+                            <input class="form-control" type="email" name="email" id="email">
+                        </div>
+                        <div class="col-4">
+                            <label for="">Age</label>
+                            <input class="form-control" type="number" name="age" id="age">
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end mt-4">
+                        <a href="http://localhost:8080/MvcProject/src/view/pages/User"
+                            class="btn btn-primary col-2 mr-3">Go back</a>
+                        <button type="submit" class="btn btn-success col-2">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    function fetchInitialData() {
+        const urlParams = new URLSearchParams(window.location.search)
+        const id = urlParams.get('id')
+
+        jQuery.ajax({
+            url: 'http://localhost:8080/MvcProject/src/services/User.php',
+            dataType: 'json',
+            type: 'POST',
+            data: {
+                option: 'GET_BY_ID',
+                payload: {
+                    id
+                }
+            }
+        }).done(data => {
+            $('#name').val(data.name)
+            $('#email').val(data.email)
+            $('#age').val(data.age)
+        })
+    }
+
+    $(document).ready(function () {
+        fetchInitialData()
+
+        $('#formAddUser').on('submit', (e) => {
+            e.preventDefault()
+
+            const urlParams = new URLSearchParams(window.location.search)
+            const id = urlParams.get('id')
+
+            const name = $('#name').val()
+            const email = $('#email').val()
+            const age = $('#age').val()
+
+            const user = {
+                id,
+                name,
+                email,
+                age
+            }
+
+            jQuery.ajax({
+                url: 'http://localhost:8080/MvcProject/src/services/User.php',
+                type: 'POST',
+                data: {
+                    option: 'PUT',
+                    payload: {
+                        user
+                    }
+                }
+            }).done(data => {
+                data = JSON.parse(data)
+                if (data === 'SUCCESS') {
+                    swal('Alterado com sucesso', {
+                        icon: "success",
+                    })
+                    setTimeout(() => {
+                        window.location.href = "http://localhost:8080/MvcProject/src/view/pages/User/"
+                    }, 1000)
+                }
+            })
+        })
+    })
+</script>
+
+</html>
