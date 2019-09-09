@@ -69,6 +69,8 @@
             }).done(data => {
                 data = JSON.parse(data)
                 if (typeof data === 'object') {
+                    localStorage.setItem('user', JSON.stringify(data))
+
                     swal('Bem vindo', {
                         icon: "success",
                     })

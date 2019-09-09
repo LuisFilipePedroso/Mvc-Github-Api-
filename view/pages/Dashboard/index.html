@@ -22,106 +22,40 @@
     <script src="https://code.jquery.com/jquery-3.4.1.js"
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="../../../services/csi.min.js"></script>
+    <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
     <title>Fucking MVC Project</title>
 </head>
 
 <body>
+    <div data-include="../../../components/Header"></div>
     <div class="container w-100 h-100">
         <div class="w-100 h-100">
-            <div class="w-100 h-100 d-flex flex-column justify-content-center">
-                <div class="row">
-                    <a href="http://localhost:8080/MvcProject/src/view/pages/AddUser" class="btn btn-success col-3">Adicionar</a>
-                </div>
-                <div class="row">
-                    <table class="table table-hover mt-4" style="border-radius: 5px">
-                        <thead>
-                            <tr>
-                                <th scope="col">Id</th>
-                                <th scope="col">Nome</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Idade</th>
-                                <th scope="col"></th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody class="person-table-body"></tbody>
-                    </table>
+            <div class="w-100 h-100 d-flex justify-content-center align-items-center">
+                <div class="card col-sm-12 col-md-6 col-lg-6">
+                    <div class="card-body">
+                        <div class="bar d-flex flex-row">
+                            <div class="icon-wrapper d-flex flex-row align-items-center">
+                                <ion-icon name="contacts" style="font-size: 40px"></ion-icon>
+                                <h5 class="ml-2" id="followers"></h5>
+                            </div>
+
+                            <div class="ml-3 icon-wrapper d-flex flex-row align-items-center">
+                                <ion-icon name="heart" style="font-size: 40px"></ion-icon>
+                                <h5 class="ml-2" id="following"></h5>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </body>
 <script>
-    function handleDelete(id) {
-        swal({
-            title: "Tem Certeza?",
-            text: "Deseja mesmo deletar este usuário?",
-            icon: "warning",
-            buttons: ["Não", "Sim, deletar"],
-            dangerMode: true,
-        })
-            .then((willDelete) => {
-                if (willDelete) {
-                    jQuery.ajax({
-                        url: 'http://localhost:8080/MvcProject/src/services/User.php',
-                        dataType: 'json',
-                        type: 'POST',
-                        data: {
-                            option: 'DELETE',
-                            payload: {
-                                id
-                            }
-                        }
-                    }).done((data) => {
-                        if (data === 'SUCCESS') {
-                            swal('Deletado com sucesso', {
-                                icon: "success",
-                            })
-                            $(".person-table-body").empty()
-                            getData()
-                        }
-                    })
-                }
-            })
-    }
-
-    function getData() {
-        jQuery.ajax({
-            url: 'http://localhost:8080/MvcProject/src/services/User.php',
-            dataType: 'json',
-            type: 'POST',
-            data: {
-                option: 'GET',
-                payload: null
-            }
-        }).done(data => {
-            data.map(d => {
-                $(".person-table-body").append(`
-                        <tr>
-                            <td>${d.id}</td>
-                            <td>${d.name}</td>
-                            <td>${d.email}</td>
-                            <td>${d.age}</td>
-                            <td style="width: 50px">
-                                <div class="w-100 d-flex justify-content-center">
-                                    <a class="remove-decoration" style="color: #333;"
-                                    href="/MvcProject/src/view/pages/EditUser/?id=${d.id}"><i class="fa fa-pencil" style="font-size: 22px"></i></a>
-                                </div>
-                            </td>
-                            <td style="width: 50px">
-                                <div class="w-100 d-flex justify-content-center">
-                                    <a class="remove-decoration" style="color: #333;" onclick="handleDelete('${d.id}')">
-                                        <i class="fa fa-trash" style="font-size: 22px"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    `)
-            })
-        })
-    }
     $(document).ready(function () {
-        getData()
+        const user = JSON.parse(localStorage.getItem('user'))
+        $('#followers').html(`10 followers`)
+        $('#following').html(`10 following`)
     })
 </script>
 
