@@ -29,20 +29,46 @@
 
 <body>
     <div data-include="../../../components/Header"></div>
-    <div class="container w-100 h-100">
+    <div class="container w-100 h-90">
         <div class="w-100 h-100">
             <div class="w-100 h-100 d-flex justify-content-center align-items-center">
-                <div class="card col-sm-12 col-md-6 col-lg-6">
-                    <div class="card-body">
+                <div class="card col-sm-12 col-md-8 col-lg-8">
+                    <div class="card-header">
                         <div class="bar d-flex flex-row">
                             <div class="icon-wrapper d-flex flex-row align-items-center">
-                                <ion-icon name="contacts" style="font-size: 40px"></ion-icon>
+                                <ion-icon class="icon" name="people"></ion-icon>
                                 <h5 class="ml-2" id="followers"></h5>
                             </div>
 
                             <div class="ml-3 icon-wrapper d-flex flex-row align-items-center">
-                                <ion-icon name="heart" style="font-size: 40px"></ion-icon>
+                                <ion-icon class="icon" name="heart"></ion-icon>
                                 <h5 class="ml-2" id="following"></h5>
+                            </div>
+
+                            <div class="ml-3 icon-wrapper d-flex flex-row align-items-center">
+                                <ion-icon class="icon" name="cloud-outline"></ion-icon>
+                                <h5 class="ml-2" id="publicRepos"></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex flex-row align-items-center">
+                            <div class="avatar-wrapper">
+                                <img id="avatar" src="" alt="Avatar">
+                            </div>
+                            <div class="content ml-3">
+                                <div class="bio-wrapper d-flex flex-row align-items-center">
+                                    <ion-icon class="icon" name="people"></ion-icon>
+                                    <p class="ml-2" id="company"></p>
+                                </div>
+                                <div class="bio-wrapper d-flex flex-row align-items-center">
+                                    <ion-icon class="icon" name="book"></ion-icon>
+                                    <p class="ml-2" id="bio"></p>
+                                </div>
+                                <div class="bio-wrapper d-flex flex-row align-items-center mt-2">
+                                    <ion-icon class="icon" name="pin"></ion-icon>
+                                    <p class="ml-2" id="location"></p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -54,8 +80,13 @@
 <script>
     $(document).ready(function () {
         const user = JSON.parse(localStorage.getItem('user'))
-        $('#followers').html(`10 followers`)
-        $('#following').html(`10 following`)
+        $('#followers').html(`${user.followers || 0} followers`)
+        $('#following').html(`${user.following || 0} following`)
+        $('#publicRepos').html(`${user.publicRepos || 0} repositories`)
+        $('#avatar').attr('src', user.avatarUrl)
+        $('#company').html(`${user.company}`)
+        $('#bio').html(`${user.bio}`)
+        $('#location').html(`${user.location}`)
     })
 </script>
 

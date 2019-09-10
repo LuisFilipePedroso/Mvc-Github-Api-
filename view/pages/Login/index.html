@@ -68,6 +68,7 @@
                 }
             }).done(data => {
                 data = JSON.parse(data)
+                debugger
                 if (typeof data === 'object') {
                     localStorage.setItem('user', JSON.stringify(data))
 

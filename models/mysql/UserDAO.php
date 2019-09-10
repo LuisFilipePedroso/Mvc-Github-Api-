@@ -10,6 +10,22 @@ class UserDAO implements iModel{
     public function __construct() {
         $this->conn = connect();
     }
+
+    public function createObj($user) {
+        return new UserDto($user['id'], 
+                            $user['name'], 
+                            $user['username'], 
+                            $user['email'], 
+                            $user['blog'],
+                            $user['followers'], 
+                            $user['following'], 
+                            $user['location'], 
+                            $user['company'],
+                            $user['bio'], 
+                            $user['publicRepos'], 
+                            $user['gitCode'],
+                            $user['avatarurl']);
+    }
     
     public function get() {
         try {
@@ -31,7 +47,8 @@ class UserDAO implements iModel{
                                         $user['company'],
                                         $user['bio'], 
                                         $user['publicRepos'], 
-                                        $user['gitCode']);
+                                        $user['gitCode'],
+                                        $user['avatarurl']);
                 array_push($userList, $userDTO);
             }
 
@@ -59,7 +76,8 @@ class UserDAO implements iModel{
                                     $user['company'],
                                     $user['bio'], 
                                     $user['publicRepos'], 
-                                    $user['gitCode']);
+                                    $user['gitCode'],
+                                    $user['avatarurl']);
             return $userDTO;
         } catch (PDOException $e) {
             return $e->getMessage();
@@ -85,7 +103,8 @@ class UserDAO implements iModel{
                                         $user['company'],
                                         $user['bio'], 
                                         $user['public_repos'], 
-                                        $user['gitcode']);
+                                        $user['gitcode'],
+                                    $user['avatarurl']);
                 return $userDTO;
             } else {
                 return null;
@@ -97,7 +116,7 @@ class UserDAO implements iModel{
     
     public function create($user) {
         try {
-            $sql = 'INSERT INTO users (name, username, email, blog, followers, following, location, company, bio, public_repos, gitcode) VALUES (:name, :username, :email, :blog, :followers, :following, :location, :company, :bio, :public_repos, :gitcode)';
+            $sql = 'INSERT INTO users (name, username, email, blog, followers, following, location, company, bio, public_repos, gitcode, avatarurl) VALUES (:name, :username, :email, :blog, :followers, :following, :location, :company, :bio, :public_repos, :gitcode, :avatarurl)';
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':name', $user['name']);
             $stmt->bindParam(':username', $user['login']);
@@ -110,9 +129,24 @@ class UserDAO implements iModel{
             $stmt->bindParam(':bio', $user['bio']);
             $stmt->bindParam(':public_repos', $user['public_repos']);
             $stmt->bindParam(':gitcode', $user['id']);
+            $stmt->bindParam(':avatarurl', $user['avatar_url']);
             $stmt->execute();
 
-            return 'SUCCESS';
+            $userDTO = new UserDto(99,
+                                    $user['name'], 
+                                    $user['login'], 
+                                    $user['email'], 
+                                    $user['blog'],
+                                    $user['followers'], 
+                                    $user['following'], 
+                                    $user['location'], 
+                                    $user['company'],
+                                    $user['bio'], 
+                                    $user['public_repos'], 
+                                    $user['id'],
+                                    $user['avatar_url']);
+
+            return $userDTO;
 
         } catch (PDOException $e) {
             return $e->getMessage();
@@ -121,7 +155,7 @@ class UserDAO implements iModel{
     
     public function update($user) {
         try {
-            $sql = 'UPDATE users SET name = :name, username = :username, email = :email, blog = :blog, followers = :followers, following = :following, location = :location, company = :company, bio = :bio, public_repos = :public_repos, gitcode = :gitcode WHERE id = :id';
+            $sql = 'UPDATE users SET name = :name, username = :username, email = :email, blog = :blog, followers = :followers, following = :following, location = :location, company = :company, bio = :bio, public_repos = :public_repos, gitcode = :gitcode, avatarurl = :avatarurl WHERE id = :id';
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':name', $user['name']);
             $stmt->bindParam(':username', $user['username']);
@@ -134,6 +168,7 @@ class UserDAO implements iModel{
             $stmt->bindParam(':bio', $user['bio']);
             $stmt->bindParam(':public_repos', $user['public_repos']);
             $stmt->bindParam(':gitcode', $user['gitcode']);
+            $stmt->bindParam(':avatarurl', $user['avatarurl']);
             $stmt->bindParam(':id', $user['id']);
             $stmt->execute();
 

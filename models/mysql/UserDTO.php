@@ -15,7 +15,7 @@ class UserDTO {
     private $publicRepos;
     private $gitCode;
 
-    public function __construct($id, 
+    public function __construct($id = null, 
                                 $name = "", 
                                 $username = "", 
                                 $email = "", 
@@ -26,7 +26,8 @@ class UserDTO {
                                 $company = "", 
                                 $bio = "", 
                                 $publicRepos = "", 
-                                $gitCode = "") {
+                                $gitCode = "",
+                                $avatarUrl = "") {
 
         $this->id = $id;
         $this->name = $name;
@@ -40,6 +41,7 @@ class UserDTO {
         $this->bio = $bio;
         $this->publicRepos = $publicRepos;
         $this->gitCode = $gitCode;
+        $this->avatarUrl = $avatarUrl;
     }
 
     public function setId($id) {
@@ -136,5 +138,13 @@ class UserDTO {
 
     public function getGitCode() {
         return $this->gitCode;
+    }
+
+    public function setAvatarUrl($avatarUrl) {
+        $this->avatarUrl = $avatarUrl;
+    }
+
+    public function getAvatarUrl() {
+        return $this->avatarUrl;
     }
 }

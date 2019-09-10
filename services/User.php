@@ -21,7 +21,8 @@ switch($option) {
             'company' => $user->getCompany(),
             'bio' => $user->getBio(),
             'publicRepos' => $user->getPublicRepos(),
-            'gitCode' => $user->getGitCode()
+            'gitCode' => $user->getGitCode(),
+            'avatarUrl' => $user->getAvatarUrl()
         ];
 
         echo json_encode($arr);
