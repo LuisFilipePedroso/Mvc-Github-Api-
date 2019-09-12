@@ -17,7 +17,7 @@ class UserController {
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'User-Agent: LuisFilipePedroso',
             'Accept: application/json',
-            'Authorization: token 135aaabf5ab9f353e3a97250ff351ee3e375e157'
+            'Authorization:'
         ]);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $output = curl_exec($ch);
