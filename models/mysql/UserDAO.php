@@ -113,7 +113,7 @@ class UserDAO implements iModel{
             return $e->getMessage();
         }
     }
-    
+
     public function create($user) {
         try {
             $sql = 'INSERT INTO users (name, username, email, blog, followers, following, location, company, bio, public_repos, gitcode, avatarurl) VALUES (:name, :username, :email, :blog, :followers, :following, :location, :company, :bio, :public_repos, :gitcode, :avatarurl)';
@@ -132,21 +132,23 @@ class UserDAO implements iModel{
             $stmt->bindParam(':avatarurl', $user['avatar_url']);
             $stmt->execute();
 
-            $userDTO = new UserDto(99,
-                                    $user['name'], 
-                                    $user['login'], 
-                                    $user['email'], 
-                                    $user['blog'],
-                                    $user['followers'], 
-                                    $user['following'], 
-                                    $user['location'], 
-                                    $user['company'],
-                                    $user['bio'], 
-                                    $user['public_repos'], 
-                                    $user['id'],
-                                    $user['avatar_url']);
+            return self::getByUsername($user['login']);
 
-            return $userDTO;
+            // $userDTO = new UserDto(99,
+            //                         $user['name'], 
+            //                         $user['login'], 
+            //                         $user['email'], 
+            //                         $user['blog'],
+            //                         $user['followers'], 
+            //                         $user['following'], 
+            //                         $user['location'], 
+            //                         $user['company'],
+            //                         $user['bio'], 
+            //                         $user['public_repos'], 
+            //                         $user['id'],
+            //                         $user['avatar_url']);
+
+            // return $userDTO;
 
         } catch (PDOException $e) {
             return $e->getMessage();

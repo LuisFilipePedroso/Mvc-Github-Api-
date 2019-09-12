@@ -68,12 +68,12 @@
                 }
             }).done(data => {
                 data = JSON.parse(data)
-                debugger
                 if (typeof data === 'object') {
                     localStorage.setItem('user', JSON.stringify(data))
 
                     swal('Bem vindo', {
                         icon: "success",
+                        showConfirmButton: false 
                     })
                     setTimeout(() => {
                         window.location.href = "http://localhost:8080/github/view/pages/Dashboard/"

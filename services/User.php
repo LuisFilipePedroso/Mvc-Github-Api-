@@ -27,6 +27,18 @@ switch($option) {
 
         echo json_encode($arr);
         break;
+    case 'SEARCH_FOLLOWERS':
+        $followers = $userController->searchFollowers($payload['username']);
+        echo json_encode($followers);
+        break;
+    case 'SEARCH_FOLLOWING':
+        $following = $userController->searchFollowing($payload['username']);
+        echo json_encode($following);
+        break;
+    case 'SEARCH_REPOS':
+        $repos = $userController->searchRepos($payload['username']);
+        echo json_encode($repos);
+        break;
     case 'GET':
         $users = $userController->get();
         $arr = [];
