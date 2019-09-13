@@ -144,21 +144,25 @@
                 data.map(d => {
                     $('#modalBody').append(`
                 <div class="d-flex flex-row align-items-center mb-3" style="border: 1px solid #d3d3d3; padding: 2%; border-radius: 5px">
-                    <div class="avatar-wrapper">
+                    <div class="avatar-wrapper col-3">
                         <img id="avatar" src="${d.avatar_url}" alt="Avatar">
                     </div>
-                    <div class="content ml-3">
+                    <div class="content col-8">
+                        <div class="bio-wrapper d-flex flex-row align-items-center">
+                            <ion-icon class="icon col-2" name="hand"></ion-icon>
+                            <p class="ml-2 col-10">${d.name || 'Not given'}</p>
+                        </div>
                         <div class="bio-wrapper d-flex flex-row align-items-center">
                             <ion-icon class="icon col-2" name="people"></ion-icon>
-                            <p class="ml-2">${d.company || 'Not given'}</p>
+                            <p class="ml-2 col-10">${d.company || 'Not given'}</p>
                         </div>
                         <div class="bio-wrapper d-flex flex-row align-items-center">
                             <ion-icon class="icon col-2" name="book"></ion-icon>
-                            <p class="ml-2">${d.bio || 'Not given'}</p>
+                            <p class="ml-2 col-10">${d.bio || 'Not given'}</p>
                         </div>
                         <div class="bio-wrapper d-flex flex-row align-items-center mt-2">
                             <ion-icon class="icon col-2" name="pin"></ion-icon>
-                            <p class="ml-2">${d.location || 'Not given'}</p>
+                            <p class="ml-2 col-10">${d.location || 'Not given'}</p>
                         </div>
                     </div>
                 </div>
